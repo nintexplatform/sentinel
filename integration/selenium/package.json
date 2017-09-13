@@ -9,10 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "selenium-webdriver": "^2.53.3",
-    "phantomjs": "^2.1.7"
-  },
-  "devDependencies": {
-    "chromedriver": "^2.25.1"
+    "selenium-webdriver": "^2.53.3"
   }
 }

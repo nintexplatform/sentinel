@@ -6,6 +6,6 @@ const ZapCore = require('./integration/zap/pages/zap-core');
  * fw = require('sentinel-ast');
  */
 module.exports = {
-    DockerCompose,
-    ZapCore,
+  DockerCompose,
+  ZapCore,
 };
