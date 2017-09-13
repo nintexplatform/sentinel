@@ -1,28 +1,26 @@
-const exec = require('child-process-promise').exec;
+/* eslint-disable import/no-unresolved */
+const { exec } = require('child-process-promise');
 const Koa = require('koa');
 
 const app = new Koa();
 const router = require('koa-router')({
-    prefix: '',
+  prefix: '',
 });
 
 const port = process.env.SVC_PORT || '8081';
-let sslyzeOutput = '';
 
 router.get('/sslyze/run/:host', async (ctx) => {
-    sslyzeOutput = await exec(`cd /usr/local/bin && ./sslyze --regular --http_headers ${ctx.params.host}`)
-                .then(function (result) {
-                    console.log (result.stdout);
-                    return result.stdout;
-                })
-                .catch(function (err) {
-                    return err;
-                });
-   ctx.body = sslyzeOutput;
+  try {
+    const result = await exec(`cd /usr/local/bin && ./sslyze --regular --http_headers ${ctx.params.host}`);
+    console.log(result.stdout); // eslint-disable-line
+    ctx.body = result.stdout;
+  } catch (err) {
+    ctx.body = err;
+  }
 });
 
 app
-    .use(router.routes())
-    .use(router.allowedMethods());
+  .use(router.routes())
+  .use(router.allowedMethods());
 
 app.listen(parseInt(port, 10));
