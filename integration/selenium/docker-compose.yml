@@ -1,0 +1,4 @@
+version: "2"
+services:
+  selenium:
+    image: selenium/standalone-chrome

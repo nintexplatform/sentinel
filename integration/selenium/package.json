@@ -1,0 +1,18 @@
+{
+  "name": "selenium",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "selenium-webdriver": "^2.53.3",
+    "phantomjs": "^2.1.7"
+  },
+  "devDependencies": {
+    "chromedriver": "^2.25.1"
+  }
+}

@@ -1,0 +1,9 @@
+version: "2"
+services:
+  sslyze:
+    build:
+      context: ##THIS_DIR##/service/.
+      dockerfile: Dockerfile
+    env_file: ##WORKING_DIR##/config.env
+    ports:
+     - 8081

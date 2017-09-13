@@ -1,0 +1,38 @@
+{
+    "name": "sentinel-ast",
+    "version": "1.0.1",
+    "description": "Sentinel automated security testing framework",
+    "main": "index.js",
+    "repository": "https://github.com/nintexplatform/sentinel",
+    "scripts": {
+        "postinstall": "node ./lib/run-install.js",
+        "uninstall-all": "node ./lib/run-uninstall.js"
+    },
+    "bin": {
+        "sentinel": "./bin/sentinel.js"
+    },
+    "files": [
+        "bin/",
+        "lib/",
+        "integration/"
+    ],
+    "author": "Nintex",
+    "license": "Apache-2.0",
+    "dependencies": {
+        "child_process": "^1.0.2",
+        "commander": "^2.11.0",
+        "cucumber": "^1.2.0",
+        "dotenv": "^2.0.0",
+        "figlet": "^1.2.0",
+        "js-yaml": "^3.9.1",
+        "lodash.merge": "^4.6.0",
+        "shelljs": "^0.7.8"
+    },
+    "devDependencies": {
+        "eslint": "^3.5.0",
+        "eslint-config-airbnb": "^11.1.0",
+        "eslint-plugin-import": "^1.14.0",
+        "eslint-plugin-jsx-a11y": "^2.2.1",
+        "eslint-plugin-react": "^6.2.0"
+    }
+}

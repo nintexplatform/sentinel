@@ -1,0 +1,36 @@
+/* Capabilities for BrowserStack Cloud Platform */
+{
+  "browserName" : "Chrome", 
+  "browser_version" : "38.0",
+  "os" : "Windows", 
+  "os_version" : "7",
+  "browserstack.user" : "xyz",
+  "browserstack.key" : "aBC12T",
+  "resolution": "1920x1080"
+}
+
+/* Capabilities for SauceLabs Cloud Platform */
+/*
+{
+  "browserName" : "Chrome", 
+  "browser_version" : "38.0",
+  "os" : "Windows", 
+  "os_version" : "7",
+  "username" : "xyz",
+  "accessKey" : "aBC12T",
+  "resolution": "1920x1080"
+} 
+*/
+
+/* Capabilities for Testing Bot Cloud Platform */
+/*
+{
+  "browserName" : "Chrome", 
+  "browser_version" : "38.0",
+  "os" : "Windows", 
+  "os_version" : "7",
+  "client_key" : "xyz",
+  "client_secret" : "aBC12T",
+  "resolution": "1920x1080"
+} 
+*/
