@@ -2,6 +2,8 @@
 [![npm](http://img.shields.io/npm/v/sentinel-ast.svg)](https://www.npmjs.com/package/sentinel-ast) 
 [![License](https://img.shields.io/npm/l/sentinel-ast.svg)](https://github.com/nintexplatform/sentinel/blob/master/LICENSE)
 
+# Sentinel
+
 Sentinel is a framework that enables _automated security testing_ via a suite of industry standard open-source security tools. 
 
 It is built on Cucumber and Node.js. This allows for security test cases to be defined in Gherkin/BDD syntax making them human readable and self documenting. The idea is that we make security testing a concept that is approachable(tests written by developers, testers, security guys) and repeatable(when integrated with your CI/CD pipelines).
