@@ -4,24 +4,24 @@
 
 # Sentinel
 
-Sentinel is a framework that enables _automated security testing_ via a suite of industry standard open-source security tools. 
+Sentinel is a framework that enables _automated security testing_ via a suite of industry standard test frameworks and security tools. 
 
-It is built on Cucumber and Node.js. This allows for security test cases to be defined in Gherkin/BDD syntax making them human readable and self documenting. The idea is that we make security testing a concept that is approachable(tests written by developers, testers, security guys) and repeatable(when integrated with your CI/CD pipelines).
+It is built on Cucumber and Node.js. This allows for security test cases to be defined in Gherkin/BDD syntax making them human readable and self documenting. The idea is that we make security testing a concept that is approachable(tests written by developers, testers, security guys), repeatable(when integrated with your CI/CD pipelines) and auditable(when used to gather evidence in compliancy initiatives).
 
-Sentinel was inspired by existing security frameworks(Gauntlt, Mittn, BDD-Security) but we felt the need to provide our own flavor to security testing using a modern javascript and docker-based environment. 
+Sentinel was inspired by existing security frameworks(Gauntlt, Mittn, BDD-Security) but we felt the need to provide our own flavour to security testing with a modern javascript and docker based environment. 
 
 # Features
 Sentinel is currently integrated with
 - Automated security scanners - [Open Zap](https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project) and [SSLyze](https://github.com/nabla-c0d3/sslyze) to find security vulnerabilities in your web applications.
 - Selenium/WebDriver and Node.js for implementing browser and API based automated tests.
-- Docker Compose to enable what we call the BYOC (Bring Your Own Container) feature, allowing you to latch onto the underlying container and networking infrastructure.
+- Docker/Compose that enables drop-in isolation of integrated components during runtime. It also enables what we call the Bring-Your-Own-Container(s) feature, which gives consumers of Sentinel the capability to attach their web applications/services as containers onto Sentinels' networking infrastructure.
 - Reporting tools. 
 
 It has been designed from ground-up to be completely [extensible](#extensibility).
 
 # Quickstart
 
-We want to get you off the ground and started as quick as possible in just a few steps. Running commands below on your shell will install Node.js, Docker and Sentinel running tests against a containerized website.
+We want to get you off the ground and started as quick as possible in just a few steps. Running commands below on your shell will install Node.js, Docker and Sentinel running security tests against a local containerized website.
 
 ```bash
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/nintexplatform/sentinel/master/bin/install-dependencies.sh)"
@@ -33,6 +33,8 @@ npm run test
 On Linux, run the install-dependencies script under `sudo` for root privileges.
 
 Once the tests have completed, you can find a generated report under `sentinel-example/report` directory
+
+We've introduced an example use case of Sentinel in the [`sentinel-example`](https://github.com/nintexplatform/sentinel-example) repo
 
 # Getting Started
 To install the framework:
@@ -130,8 +132,8 @@ This is a general purpose Node.js container that tests are run in.
 It reads environment variables from config.env
 Node Version 7+
 
-### Selenium Webdriver
-The node [Selenium Webdriver](https://www.npmjs.com/package/selenium-webdriver) package.  
+### Selenium WebDriver
+The node [Selenium WebDriver](https://www.npmjs.com/package/selenium-webdriver) package.  
 It has cucumber hooks to configure the webdriver and adds the driver instance to the world.  
 It also has a docker service for running a chrome container for remote control of the browser.
 
