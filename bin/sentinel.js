@@ -23,9 +23,10 @@ program
   });
 
 program
-  .command('run-compose [COMMAND] [ARGS...]')
+  .command('run-compose <COMMAND> [ARGS...]')
   .description('Runs docker compose commands')
-  .action(() => { CLI.runCompose(process.argv[3], process.argv.slice(4)); })
+  .option('-y, --yaml [FILE]', 'Additional services to start', (f, files) => files.concat(f), [])
+  .action((cmd, args, options) => CLI.runCompose(cmd, args, options.yaml))
   .on('--help', () => {
     console.log('\n  Examples:');
     console.log();
@@ -33,18 +34,21 @@ program
     console.log();
   });
 
+const cucumberArgs = [];
+const gatherCucumberArgs = (param) => (val) => cucumberArgs.concat(param, val);
 program
-  .command('run-cucumber [<DIR | FILE[:LINE]>...]')
+  .command('run-cucumber [<DIR>|<FILE[:LINE]>...]')
   .description('Executes cucumber tests')
-  .option('-n, --name', 'To specify a scenario by its name matching a regular expression')
-  .option('-r, --require <FILE|DIR>', 'To require support files before executing the features')
-  .option('-f, --format <TYPE[:PATH]>', 'To specify the format of the output')
-  .option('-fo, --format-options <JSON>', 'To pass in format options')
-  .option('-p, --profile <NAME>', 'To set the profile')
-  .option('-t, --tag <EXPRESSION>', 'To run specific features or scenarios')
-  .option('-c, --compiler <file_extension>:<module_name>', 'To transpile Step definitions and support files written in other languages to JS')
-  .option('-w, --world-parameters <JSON>', 'To pass in parameters to pass to the world constructor')
-  .action(() => { CLI.runCucumber(process.argv.slice(3)); })
+  .option('-y, --yaml [FILE]', 'Additional services to start', (f, files) => files.concat(f), [])
+  .option('-n, --name', 'To specify a scenario by its name matching a regular expression', gatherCucumberArgs('--name'))
+  .option('-r, --require <FILE|DIR>', 'To require support files before executing the features', gatherCucumberArgs('--require'))
+  .option('-f, --format <TYPE[:PATH]>', 'To specify the format of the output', gatherCucumberArgs('--format'))
+  .option('-fo, --format-options <JSON>', 'To pass in format options', gatherCucumberArgs('--format-options'))
+  .option('-p, --profile <NAME>', 'To set the profile', gatherCucumberArgs('--profile'))
+  .option('-t, --tag <EXPRESSION>', 'To run specific features or scenarios', gatherCucumberArgs('--tag'))
+  .option('-c, --compiler <file_extension>:<module_name>', 'To transpile Step definitions and support files written in other languages to JS', gatherCucumberArgs('--compiler'))
+  .option('-w, --world-parameters <JSON>', 'To pass in parameters to pass to the world constructor', gatherCucumberArgs('--world-parameters'))
+  .action((args, options) => CLI.runCucumber(cucumberArgs.concat(args), options.yaml))
   .on('--help', () => {
     console.log('\n  Examples:');
     console.log();
