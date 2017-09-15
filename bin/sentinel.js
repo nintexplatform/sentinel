@@ -1,9 +1,9 @@
 #!/usr/bin/env node
+/* eslint-disable no-console */
 
 const program = require('commander');
 const pkg = require('./../package.json');
 const CLI = require('../lib/cli');
-const figlet = require('figlet');
 
 program
   .version(pkg.version);
@@ -12,7 +12,7 @@ program
   .command('init')
   .description('Initializes the templates from core framework repo')
   .action(() => {
-    genAscii();
+    console.log(CLI.genAscii());
     CLI.init();
   })
   .on('--help', () => {
@@ -35,7 +35,7 @@ program
   });
 
 const cucumberArgs = [];
-const gatherCucumberArgs = (param) => (val) => cucumberArgs.concat(param, val);
+const gatherCucumberArgs = param => val => cucumberArgs.concat(param, val);
 program
   .command('run-cucumber [<DIR>|<FILE[:LINE]>...]')
   .description('Executes cucumber tests')
@@ -84,16 +84,3 @@ program.parse(process.argv);
 
 // Print Usage output to console when user doesn't provie any command
 if (!process.argv.slice(2).length) program.outputHelp();
-
-function genAscii() {
-  figlet.text('sentinel', {
-    font: 'Colossal',
-    horizontalLayout: 'fitted',
-    verticalLayout: 'default',
-  }, function (err, data) {
-    if (err) {
-      return (err);
-    }
-    console.log(data);
-  });
-}

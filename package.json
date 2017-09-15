@@ -1,10 +1,11 @@
 {
   "name": "sentinel-ast",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Sentinel automated security testing framework",
   "main": "index.js",
   "repository": "https://github.com/nintexplatform/sentinel",
   "scripts": {
+    "lint": "./node_modules/.bin/eslint **/*.js",
     "postinstall": "node ./lib/run-install.js",
     "uninstall-all": "node ./lib/run-uninstall.js"
   },

@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - "7"
+script:
+  - npm run lint
+deploy:
+  provider: npm
+  email: perry.loh@nintex.com
+  api_key:
+    secure: i+1kedV5lIw9dUicYB9YFgjSmaPFLwMr0VSQMK4w4iWEeufUPrxfT+1X0Ldg2CEvrF8qWCp61X/bF9jDlpsfi+go3rYBLElMy3rAVYD64XFPFd3rXNBnJmZnZ/atC5kA24yKzA4OOZ8j+5YTPhMD1rEkXuh8ixanRRdHtKctRCoTN+VCKQC8aK97TCfKNvPBXd4WSpvJDkSMQ9hxU3TQZzMzcW+HzELY5yqKLUatvjpux8zeMw7gGK8iqxriNTGnuPYVOCJvZd8Yu5JnWbep+pLchdA7JUFXUSZ/TURTn+GyiMxQNrIdLBH0UYwRuAiIhY11Wu6xtEE6oYAftEDIY4DyTXwelnR7mEui+lJBmtX0MRB+y8LUoREYG6OPDsSPQKm9TogzR5j+jikgOEEo49BkcAVzFxtE8Fy1MfPElYAi2cYzlC9Slj2UMJsSNFBpD7VZ1+Fh24/mf7U2cJL7T3Xr1WsVQsWz0gVO5nU5hjtcIkOisIitYiHaiZgX8JDWgaXXOmR3SB2q4wz3J7RtWQUliZNw7/0B0zfk6jukWVNXb8+cZ4BXbzL4I2uxL3fDiYNZbowb0PSOAEVjdztdZYRJUnM1oBMMFyHnZ39TWZGYKi/luCInx/nnc44ioYJR3cNJfPqh77vB4TTw1D8Ty6ALEz3tc8Jd/0nTELxM5lQ=
+  on:
+    repo: nintexplatform/sentinel
+    branch: master
