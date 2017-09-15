@@ -1,6 +1,7 @@
 
-[![npm](http://img.shields.io/npm/v/sentinel-ast.svg)](https://www.npmjs.com/package/sentinel-ast) 
+[![npm](https://img.shields.io/npm/v/sentinel-ast.svg)](https://www.npmjs.com/package/sentinel-ast) 
 [![License](https://img.shields.io/npm/l/sentinel-ast.svg)](https://github.com/nintexplatform/sentinel/blob/master/LICENSE)
+[![Build Status](https://travis-ci.org/nintexplatform/sentinel.svg?branch=master)](https://travis-ci.org/nintexplatform/sentinel)
 
 # Sentinel
 
