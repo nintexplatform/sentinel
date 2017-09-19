@@ -1,9 +1,23 @@
 {
   "name": "sentinel-ast",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Sentinel automated security testing framework",
   "main": "index.js",
   "repository": "https://github.com/nintexplatform/sentinel",
+  "keywords": [
+    "sentinel",
+    "security",
+    "test",
+    "testing",
+    "docker",
+    "selenium",
+    "webdriver",
+    "zap",
+    "sslyze",
+    "automation",
+    "cucumber",
+    "gherkin"
+  ],
   "scripts": {
     "lint": "./node_modules/.bin/eslint **/*.js",
     "postinstall": "node ./lib/run-install.js",
