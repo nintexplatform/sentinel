@@ -1,8 +1,9 @@
 const rp = require('request-promise');
+const env = require('./../cucumber/environment');
 
 class Sslyze {
   async startTheProcess(host) {
-    this.output = await rp(`http://sslyze:8081/sslyze/run/${host}`);
+    this.output = await rp(`${env.sslyzeServerUrl}sslyze/run/${host}`);
     return this.output;
   }
 

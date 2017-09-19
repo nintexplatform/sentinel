@@ -165,8 +165,9 @@ Extending the framework starts with packaging your new **component** as a sub-di
 
 | Integration         | Name                        | Description                    | Required | Default / Optional Values |
 |---------------------|-----------------------------|--------------------------------|----------|-------------|
-| sslyze              | SSLYZE_SERVER_URL                  | Url to run sslyze scan against | true     | http://sslyze:8081/ |
+| sslyze              | SSLYZE_SERVER_URL           | Url to sslyze api server       | false    | http://sslyze:8081/ |
 | zap                 | ZAP_SERVER_URL              | Url to zap api server          | false    | http://zap:8080/ |
+| application         | AUT_SERVER_URL              | Url to application under test  | true     | https://nodegoat:4000 |
 | selenium            | SELENIUM_BROWSER            | Webdriver capabilities         | false    | chrome      |
 | selenium            | SELENIUM_REMOTE_URL         | Webdriver url                  | true     | http://selenium:4444/wd/hub |
 | selenium            | SELENIUM_REMOTE_CAPABILITY  | For remote selenium services   | false    |  ./remoteSelenium.config.template.json |
