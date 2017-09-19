@@ -29,7 +29,7 @@ async function waitForResult(result, timeout, action) {
 }
 
 module.exports = function () {
-  this.Then(/^the application is spidered/, async function () {
+  this.Then(/^the application is spidered/, { timeout: env.longTimeout }, async function () {
     zap.setsetOptionMaxDepth(5);
     zap.setOptionThreadCount(5);
 
