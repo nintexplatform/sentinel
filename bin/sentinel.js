@@ -11,9 +11,11 @@ program
 program
   .command('init')
   .description('Initializes the templates from core framework repo')
-  .action(() => {
-    console.log(CLI.genAscii());
-    CLI.init();
+  .action(async () => {
+    const ascii = await CLI.genAscii();
+    console.log(ascii);
+    await CLI.init();
+    console.log('Initialization Completed!');
   })
   .on('--help', () => {
     console.log('\n  Examples:');
