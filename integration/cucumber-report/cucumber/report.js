@@ -11,17 +11,15 @@ const shell = require('shelljs');
 const reporter = require('cucumber-html-reporter');
 
 const reportDirectory = process.env.CUCUMBER_REPORT_DIR || './report/';
-const cucumberRawJsonFile = 'cucumber_report.json';
 
 function bootstrap() {
   shell.mkdir('-p', reportDirectory);
-  shell.rm('-f', path.join(reportDirectory, cucumberRawJsonFile));
 }
 
 function writeReport() {
   try {
-    const jsonFile = path.join(reportDirectory, cucumberRawJsonFile);
     const logTimeStamp = new Date().toISOString();
+    const jsonFile = path.join(reportDirectory, `cucumber_report_${logTimeStamp}.json`);
     const output = path.join(reportDirectory, `cucumber_report_${logTimeStamp}.html`);
     const stat = fs.statSync(jsonFile);
     if (stat.isFile()) {
