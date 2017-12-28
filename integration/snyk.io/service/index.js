@@ -9,9 +9,9 @@ const router = require('koa-router')({
 
 const port = process.env.SVC_PORT || '8086';
 
-router.get('/synk/run', async (ctx) => {
+router.get('/snyk/run', async (ctx) => {
   try {
-    const result = await exec('./snyk.sh');
+    const result = await exec('sh ./snyk.sh');
     console.log(result.stdout); // eslint-disable-line
     ctx.body = result.stdout;
   } catch (err) {

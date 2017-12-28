@@ -1,11 +1,11 @@
 version: "2"
 services:
-  snyk.io:
+  snyk:
     build:
       context: ##THIS_DIR##/service/.
       dockerfile: Dockerfile
-    environment:
-     - SNYK_TOKEN=XYZ
-     - APP_DIR=/working_dir
+    env_file: ##WORKING_DIR##/config.env
     volumes:
       - ##WORKING_DIR##:/working_dir
+    ports:
+     - 8086
