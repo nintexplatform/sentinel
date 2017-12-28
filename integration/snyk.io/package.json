@@ -1,16 +1,18 @@
 {
-  "name": "snyk-service",
+  "name": "snyk",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "child-process-promise": "^2.2.1",
-    "koa": "^2.2.0",
-    "koa-router": "^7.2.0"
+    "lodash.merge": "^4.6.0",
+    "request": "^2.34",
+    "request-promise": "^4.2.1",
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1"
   }
 }

@@ -12,7 +12,6 @@ const port = process.env.SVC_PORT || '8086';
 router.get('/snyk/run', async (ctx) => {
   try {
     const result = await exec('sh ./snyk.sh');
-    console.log(result.stdout); // eslint-disable-line
     ctx.body = result.stdout;
   } catch (err) {
     ctx.body = err;
