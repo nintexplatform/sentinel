@@ -3,6 +3,6 @@ services:
   zap:
     command: [ zap.sh, -daemon, -host, "0.0.0.0", -port, "8080", -config, api.disablekey=true, -config, api.addrs.addr.name=.*, -config, api.addrs.addr.regex=true ]
     env_file: ##WORKING_DIR##/config.env
-    image: owasp/zap2docker-bare
+    image: owasp/zap2docker-stable
     ports:
      - 8080
