@@ -1,0 +1,11 @@
+version: "2"
+services:
+  snyk:
+    build:
+      context: ##THIS_DIR##/service/.
+      dockerfile: Dockerfile
+    env_file: ##WORKING_DIR##/config.env
+    volumes:
+      - ##WORKING_DIR##:/working_dir
+    ports:
+     - 8086
