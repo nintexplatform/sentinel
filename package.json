@@ -1,6 +1,6 @@
 {
   "name": "sentinel-ast",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Sentinel automated security testing framework",
   "main": "index.js",
   "repository": "https://github.com/nintexplatform/sentinel",
@@ -13,6 +13,7 @@
     "selenium",
     "webdriver",
     "zap",
+    "snyk.io",
     "sslyze",
     "automation",
     "cucumber",
