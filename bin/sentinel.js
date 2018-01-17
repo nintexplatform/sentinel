@@ -28,7 +28,8 @@ program
   .command('run-compose <COMMAND> [ARGS...]')
   .description('Runs docker compose commands')
   .option('-y, --yaml [FILE]', 'Additional services to start', (f, files) => files.concat(f), [])
-  .action((cmd, args, options) => CLI.runCompose(cmd, args, options.yaml))
+  .action((cmd, args, options) => CLI.runCompose(cmd, args, options.yaml)
+    .catch(() => process.exit(1)))
   .on('--help', () => {
     console.log('\n  Examples:');
     console.log();
@@ -50,7 +51,8 @@ program
   .option('-t, --tag <EXPRESSION>', 'To run specific features or scenarios', gatherCucumberArgs('--tag'))
   .option('-c, --compiler <file_extension>:<module_name>', 'To transpile Step definitions and support files written in other languages to JS', gatherCucumberArgs('--compiler'))
   .option('-w, --world-parameters <JSON>', 'To pass in parameters to pass to the world constructor', gatherCucumberArgs('--world-parameters'))
-  .action((args, options) => CLI.runCucumber(cucumberArgs.concat(args), options.yaml))
+  .action((args, options) => CLI.runCucumber(cucumberArgs.concat(args), options.yaml)
+    .catch(() => process.exit(1)))
   .on('--help', () => {
     console.log('\n  Examples:');
     console.log();
@@ -62,7 +64,8 @@ program
   .command('start-services')
   .description('Starts all the needed docker containers')
   .option('-y, --yaml [FILE]', 'Additional services to start', (f, files) => files.concat(f), [])
-  .action(cmd => CLI.startServices(cmd.yaml))
+  .action(cmd => CLI.startServices(cmd.yaml)
+    .catch(() => process.exit(1)))
   .on('--help', () => {
     console.log('\n  Examples:');
     console.log();
@@ -74,7 +77,8 @@ program
   .command('stop-services')
   .description('Stops all the needed docker containers')
   .option('-y, --yaml [FILE]', 'Additional services to start', (f, files) => files.concat(f), [])
-  .action(cmd => CLI.stopServices(cmd.yaml))
+  .action(cmd => CLI.stopServices(cmd.yaml)
+    .catch(() => process.exit(1)))
   .on('--help', () => {
     console.log('\n  Examples:');
     console.log();
