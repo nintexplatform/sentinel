@@ -1,0 +1,16 @@
+{
+  "name": "snyk-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "child-process-promise": "^2.2.1",
+    "koa": "^2.2.0",
+    "koa-router": "^7.2.0"
+  }
+}

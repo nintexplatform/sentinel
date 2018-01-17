@@ -13,6 +13,7 @@
     "selenium",
     "webdriver",
     "zap",
+    "snyk.io",
     "sslyze",
     "automation",
     "cucumber",
