@@ -3,7 +3,10 @@ const env = require('./../cucumber/environment');
 
 class Snyk {
   async startTheProcess() {
-    this.output = await rp(`${env.snykUrl}snyk/run`);
+    this.output = await rp({
+      uri: `${env.snykUrl}snyk/run`,
+      json: true,
+    });
     return this.output;
   }
 }
