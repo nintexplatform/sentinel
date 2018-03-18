@@ -5,6 +5,8 @@ const program = require('commander');
 const pkg = require('./../package.json');
 const CLI = require('../lib/cli');
 
+const cli = new CLI();
+
 program
   .version(pkg.version);
 
@@ -14,7 +16,7 @@ program
   .action(async () => {
     const ascii = await CLI.genAscii();
     console.log(ascii);
-    await CLI.init();
+    await cli.init();
     console.log('Initialization Completed!');
   })
   .on('--help', () => {
@@ -27,9 +29,11 @@ program
 program
   .command('run-compose <COMMAND> [ARGS...]')
   .description('Runs docker compose commands')
-  .option('-y, --yaml [FILE]', 'Additional services to start', (f, files) => files.concat(f), [])
-  .action((cmd, args, options) => CLI.runCompose(cmd, args, options.yaml)
-    .catch(() => process.exit(1)))
+  .action((cmd, args) => cli.runCompose(cmd, args)
+    .catch((ex) => {
+      console.log(ex);
+      process.exit(1);
+    }))
   .on('--help', () => {
     console.log('\n  Examples:');
     console.log();
@@ -42,7 +46,6 @@ const gatherCucumberArgs = param => val => cucumberArgs.concat(param, val);
 program
   .command('run-cucumber [<DIR>|<FILE[:LINE]>...]')
   .description('Executes cucumber tests')
-  .option('-y, --yaml [FILE]', 'Additional services to start', (f, files) => files.concat(f), [])
   .option('-n, --name', 'To specify a scenario by its name matching a regular expression', gatherCucumberArgs('--name'))
   .option('-r, --require <FILE|DIR>', 'To require support files before executing the features', gatherCucumberArgs('--require'))
   .option('-f, --format <TYPE[:PATH]>', 'To specify the format of the output', gatherCucumberArgs('--format'))
@@ -51,8 +54,11 @@ program
   .option('-t, --tag <EXPRESSION>', 'To run specific features or scenarios', gatherCucumberArgs('--tag'))
   .option('-c, --compiler <file_extension>:<module_name>', 'To transpile Step definitions and support files written in other languages to JS', gatherCucumberArgs('--compiler'))
   .option('-w, --world-parameters <JSON>', 'To pass in parameters to pass to the world constructor', gatherCucumberArgs('--world-parameters'))
-  .action((args, options) => CLI.runCucumber(cucumberArgs.concat(args), options.yaml)
-    .catch(() => process.exit(1)))
+  .action(args => cli.runCucumber(cucumberArgs.concat(args))
+    .catch((ex) => {
+      console.log(ex);
+      process.exit(1);
+    }))
   .on('--help', () => {
     console.log('\n  Examples:');
     console.log();
@@ -63,26 +69,30 @@ program
 program
   .command('start-services')
   .description('Starts all the needed docker containers')
-  .option('-y, --yaml [FILE]', 'Additional services to start', (f, files) => files.concat(f), [])
-  .action(cmd => CLI.startServices(cmd.yaml)
-    .catch(() => process.exit(1)))
+  .action(() => cli.startServices()
+    .catch((ex) => {
+      console.log(ex);
+      process.exit(1);
+    }))
   .on('--help', () => {
     console.log('\n  Examples:');
     console.log();
-    console.log('    $ sentinel start-services -y ./path/to/docker-compose.yml');
+    console.log('    $ sentinel start-services');
     console.log();
   });
 
 program
   .command('stop-services')
   .description('Stops all the needed docker containers')
-  .option('-y, --yaml [FILE]', 'Additional services to start', (f, files) => files.concat(f), [])
-  .action(cmd => CLI.stopServices(cmd.yaml)
-    .catch(() => process.exit(1)))
+  .action(() => cli.stopServices()
+    .catch((ex) => {
+      console.log(ex);
+      process.exit(1);
+    }))
   .on('--help', () => {
     console.log('\n  Examples:');
     console.log();
-    console.log('    $ sentinel stop-services -y ./path/to/docker-compose.yml');
+    console.log('    $ sentinel stop-services');
     console.log();
   });
 
