@@ -166,7 +166,12 @@ Extending the framework starts with packaging your new **component** as a sub-di
 | Integration         | Name                        | Description                    | Required | Default / Optional Values |
 |---------------------|-----------------------------|--------------------------------|----------|-------------|
 | sslyze              | SSLYZE_SERVER_URL           | Url to sslyze api server       | false    | http://sslyze:8081/ |
-| zap                 | ZAP_SERVER_URL              | Url to zap api server          | false    | http://zap:8080/ |
+| zap                 | ZAP_SERVER_URL              | Url to zap api server          | false    | http://zap:8080/    |
+| snyk                | SNYK_TOKEN                  | [Auth token](https://snyk.io/docs/using-snyk#authentication) for snyk                     | false    |                     |
+| snyk                | SNYK_URL                    | Url to snyk api server         | false    | http://snyk:8086/   |
+
+SNYK_TOKEN=XYZ
+SNYK_URL=http://snyk:8086/
 | application         | AUT_SERVER_URL              | Url to application under test  | true     | https://nodegoat:4000 |
 | selenium            | SELENIUM_BROWSER            | Webdriver capabilities         | false    | chrome      |
 | selenium            | SELENIUM_REMOTE_URL         | Webdriver url                  | true     | http://selenium:4444/wd/hub |
