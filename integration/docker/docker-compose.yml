@@ -1,0 +1,12 @@
+version: "2"
+services:
+  docker:
+    build:
+      context: ##THIS_DIR##/service/.
+      dockerfile: Dockerfile
+    volumes:
+      - ##WORKING_DIR##:##WORKING_DIR##
+      - /var/run/docker.sock:/var/run/docker.sock
+    working_dir: ##WORKING_DIR##
+    ports:
+     - 8080
