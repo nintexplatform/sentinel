@@ -13,7 +13,7 @@ Sentinel was inspired by existing security frameworks(Gauntlt, Mittn, BDD-Securi
 
 # Features
 Sentinel is currently integrated with
-- Automated security scanners - [Open Zap](https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project) and [SSLyze](https://github.com/nabla-c0d3/sslyze) to find security vulnerabilities in your web applications.
+- Automated security scanners - [Open Zap](https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project), [SSLyze](https://github.com/nabla-c0d3/sslyze) and [snyk](https://snyk.io) to find security vulnerabilities in your web applications.
 - Selenium/WebDriver and Node.js for implementing browser and API based automated tests.
 - Docker/Compose that enables drop-in isolation of integrated components during runtime. It also enables what we call the Bring-Your-Own-Container(s) feature, which gives consumers of Sentinel the capability to attach their web applications/services as containers onto Sentinels' networking infrastructure.
 - Reporting tools. 
