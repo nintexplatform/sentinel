@@ -9,7 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "lodash.merge": "^4.6.0",
     "request": "^2.34",
     "request-promise": "^4.2.1",
     "chai": "^4.1.2",

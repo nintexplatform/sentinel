@@ -1,7 +1,6 @@
-const merge = require('lodash.merge');
-const env = require('../../../lib/environment');
+const sharedEnv = require('../../../lib/environment');
 
-module.exports = merge(env, {
+module.exports = Object.assign({}, sharedEnv, {
   server: process.env.ZAP_SERVER_URL || 'http://zap:8080/',
-  scanTimeout: parseInt(process.env.ZAP_SCAN_TIMEOUT || '30000', 10),
+  scanTimeout: sharedEnv.parseTimeout(process.env.ZAP_SCAN_TIMEOUT, 30000),
 });
