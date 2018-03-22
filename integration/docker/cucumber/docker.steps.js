@@ -17,4 +17,22 @@ module.exports = function () {
       await this.docker.cmd(...args.slice(1));
     }
   });
+
+  this.Given(/^I have copied the paths from the docker image$/, { timeout: env.longTimeout }, async function (table) {
+    const paths = table.hashes();
+    await Promise.all(paths.map((p) => {
+      let { dockerImage, dockerTag } = p;
+      if (dockerTag) {
+        const [, envVar] = dockerTag.match(/^\[(.+)\]$/);
+        if (envVar) {
+          dockerTag = process.env[envVar];
+        }
+        dockerImage += `:${dockerTag}`;
+      }
+      if (p.type === 'file') {
+        return this.docker.cmd('run', '-v', '$(pwd):/wd', dockerImage, 'cp', p.fromPath, `/wd/${p.toPath}`);
+      }
+      return this.docker.cmd('run', '-v', '$(pwd):/wd', dockerImage, 'cp', '-R', p.fromPath, `/wd/${p.toPath}`);
+    }));
+  });
 };

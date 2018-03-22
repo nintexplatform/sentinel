@@ -4,6 +4,7 @@ services:
     build:
       context: ##THIS_DIR##/service/.
       dockerfile: Dockerfile
+    env_file: ##WORKING_DIR##/config.env
     volumes:
       - ##WORKING_DIR##:##WORKING_DIR##
       - /var/run/docker.sock:/var/run/docker.sock
