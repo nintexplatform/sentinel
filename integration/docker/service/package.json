@@ -1,5 +1,5 @@
 {
-  "name": "snyk-service",
+  "name": "docker-service",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,10 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC",
+  "license": "UNLICENSED",
   "dependencies": {
-    "koa": "^2.2.0",
+    "koa": "^2.5.0",
     "koa-bodyparser": "^4.2.0",
-    "koa-router": "^7.2.0"
+    "koa-router": "^7.4.0"
   }
 }

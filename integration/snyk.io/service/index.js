@@ -1,6 +1,8 @@
 /* eslint-disable import/no-unresolved */
-const { exec } = require('child-process-promise');
+const { spawn } = require('child_process');
+const path = require('path');
 const Koa = require('koa');
+const bodyParser = require('koa-bodyparser');
 
 const app = new Koa();
 const router = require('koa-router')({
@@ -60,12 +62,40 @@ function parseResult(result) {
   return vulnerabilities.map(parseGroupOfLines);
 }
 
+function runCommand(prog, args, options = {}) {
+  const cmd = spawn(prog, args, options);
+  let result = '';
+  return new Promise((resolve, reject) => {
+    cmd.stdout.on('data', (data) => {
+      result += data;
+    });
+    cmd.on('error', (err) => {
+      console.log(err);
+      reject(err);
+    });
+    cmd.on('exit', (code) => {
+      console.log(result);
+      console.log(code);
+      resolve({ code, result });
+    });
+  });
+}
+
 router.get('/snyk/run', async (ctx) => {
-  const result = await exec('sh ./snyk.sh');
-  ctx.body = parseResult(result.stdout);
+  await runCommand('snyk', ['auth', '$SNYK_TOKEN'], { shell: true });
+  const { result } = await runCommand('snyk', ['test']);
+  ctx.body = parseResult(result);
+});
+
+router.post('/snyk/run', async (ctx) => {
+  const cwd = path.join(process.cwd(), ctx.request.body.working_directory || '.');
+  await runCommand('snyk', ['auth', '$SNYK_TOKEN'], { cwd, shell: true });
+  const { result } = await runCommand('snyk', ['test'], { cwd });
+  ctx.body = parseResult(result);
 });
 
 app
+  .use(bodyParser())
   .use(router.routes())
   .use(router.allowedMethods());
 

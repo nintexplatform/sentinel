@@ -10,23 +10,16 @@ const chrome = require('selenium-webdriver/chrome');
 const fs = require('fs');
 const { URL } = require('url');
 const rp = require('request-promise-native');
-
-function parseTimeout(val, ifNanValue) {
-  const parsed = parseInt(val, 10);
-  if (isNaN(parsed)) { // eslint-disable-line no-restricted-globals
-    return ifNanValue;
-  }
-  return parsed;
-}
+const sharedEnv = require('../../../lib/environment');
 
 const env = {
   browser: process.env.SELENIUM_BROWSER || 'chrome',
   remoteUrl: process.env.SELENIUM_REMOTE_URL || 'http://selenium:4444/wd/hub',
   executionEnv: process.env.EXECUTION_ENVIRONMENT || 'local',
   proxyURL: process.env.ZAP_SERVER_URL || 'http://zap:8080',
-  pageLoadTimeout: parseTimeout(process.env.WEBDRIVER_PAGE_TIMEOUT, 45000),
+  pageLoadTimeout: sharedEnv.parseTimeout(process.env.WEBDRIVER_PAGE_TIMEOUT, 45000),
   remoteSeleniumcapabilities: process.env.SELENIUM_REMOTE_CAPABILITY,
-  waitForSeleniumTimeout: parseTimeout(process.env.SELENIUM_SERVICE_START_TIMEOUT, 45000),
+  waitForSeleniumTimeout: sharedEnv.parseTimeout(process.env.SELENIUM_SERVICE_START_TIMEOUT, 45000),
 };
 
 async function waitForSeleniumDriver() {
