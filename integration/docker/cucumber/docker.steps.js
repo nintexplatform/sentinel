@@ -1,5 +1,6 @@
 const Docker = require('../pages/docker');
 const env = require('./environment');
+const assert = require('assert');
 
 module.exports = function () {
   this.Before(function () {
@@ -14,7 +15,8 @@ module.exports = function () {
     const cmd = table.rowsHash().cmd || '';
     const args = cmd.split(' ');
     if (args.length > 1 && args[0] === 'docker') {
-      await this.docker.cmd(...args.slice(1));
+      const { code } = await this.docker.cmd(...args.slice(1));
+      assert(code === 0, 'Login unsuccessful');
     }
   });
 
@@ -30,9 +32,17 @@ module.exports = function () {
         dockerImage += `:${dockerTag}`;
       }
       if (p.type === 'file') {
-        return this.docker.cmd('run', '-v', '$(pwd):/wd', dockerImage, 'cp', p.fromPath, `/wd/${p.toPath}`);
+        return this.docker.cmd('run', '-v', '$(pwd):/wd', dockerImage, 'cp', p.fromPath, `/wd/${p.toPath}`)
+          .then(({ result, code }) => {
+            assert(code === 0, 'Copy was unsuccessful');
+            return result;
+          });
       }
-      return this.docker.cmd('run', '-v', '$(pwd):/wd', dockerImage, 'cp', '-R', p.fromPath, `/wd/${p.toPath}`);
+      return this.docker.cmd('run', '-v', '$(pwd):/wd', dockerImage, 'cp', '-R', p.fromPath, `/wd/${p.toPath}`)
+        .then(({ result, code }) => {
+          assert(code === 0, 'Copy was unsuccessful');
+          return result;
+        });
     }));
   });
 };
