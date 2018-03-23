@@ -7,5 +7,6 @@ services:
     env_file: ##WORKING_DIR##/config.env
     volumes:
       - ##WORKING_DIR##:/working_dir
+    working_dir: /working_dir
     ports:
      - 8086

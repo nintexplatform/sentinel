@@ -31,7 +31,7 @@ function runCommand(prog, args, options = {}) {
 
 router.post('/cmd', async (ctx) => {
   const args = ctx.request.body.args || [];
-  const { result } = await runCommand('docker', args, { shell: true });
+  const result = await runCommand('docker', args, { shell: true });
   ctx.body = result;
 });
 
