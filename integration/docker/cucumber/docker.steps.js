@@ -32,13 +32,13 @@ module.exports = function () {
         dockerImage += `:${dockerTag}`;
       }
       if (p.type === 'file') {
-        return this.docker.cmd('run', '-v', '$(pwd):/wd', dockerImage, 'cp', p.fromPath, `/wd/${p.toPath}`)
+        return this.docker.cmd('run', '--rm', '-v', '$(pwd):/wd', dockerImage, 'cp', p.fromPath, `/wd/${p.toPath}`)
           .then(({ result, code }) => {
             assert(code === 0, 'Copy was unsuccessful');
             return result;
           });
       }
-      return this.docker.cmd('run', '-v', '$(pwd):/wd', dockerImage, 'cp', '-R', p.fromPath, `/wd/${p.toPath}`)
+      return this.docker.cmd('run', '--rm', '-v', '$(pwd):/wd', dockerImage, 'cp', '-R', p.fromPath, `/wd/${p.toPath}`)
         .then(({ result, code }) => {
           assert(code === 0, 'Copy was unsuccessful');
           return result;
