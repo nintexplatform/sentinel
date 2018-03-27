@@ -18,8 +18,9 @@ function bootstrap() {
 
 function writeReport() {
   try {
-    const jsonFile = path.join(reportDirectory, 'cucumber_report.json');
-    const output = path.join(reportDirectory, 'cucumber_report.html');
+    const logTimeStamp = new Date().toISOString();
+    const jsonFile = path.join(reportDirectory, `cucumber_report_${logTimeStamp}.json`);
+    const output = path.join(reportDirectory, `cucumber_report_${logTimeStamp}.html`);
     const stat = fs.statSync(jsonFile);
     if (stat.isFile()) {
       console.log(`Writing a report to ${output}`);
