@@ -10,6 +10,7 @@ const router = require('koa-router')({
 });
 
 const port = process.env.SVC_PORT || '8086';
+const svcTimeout = process.env.SNYK_SVC_TIMEOUT || '300000'; // 5 mins
 
 function groupVulnerabilityLines(lines) {
   let groupOfLines = [];
@@ -99,4 +100,6 @@ app
   .use(router.routes())
   .use(router.allowedMethods());
 
-app.listen(parseInt(port, 10));
+app
+  .listen(parseInt(port, 10))
+  .setTimeout(parseInt(svcTimeout, 10));

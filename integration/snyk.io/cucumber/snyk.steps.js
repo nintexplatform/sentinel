@@ -17,7 +17,7 @@ module.exports = function () {
     this.snykOutput = await snyk.runScanInProjectDirectory();
   });
 
-  this.Then(/^there should not be any vulnerable paths found$/, { timeout: env.longTimeout }, async function () {
+  this.Then(/^there should not be any vulnerable paths found$/, async function () {
     if (this.snykOutput) {
       assert(this.snykOutput.every(v =>
         v.severity && v.severity.toLowerCase() !== env.snykFailureLevel.toLowerCase()), 'Vulnerability detected');

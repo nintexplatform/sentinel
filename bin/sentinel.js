@@ -42,18 +42,21 @@ program
   });
 
 const cucumberArgs = [];
-const gatherCucumberArgs = param => val => cucumberArgs.concat(param, val);
+const gatherCucumberArgs = param => (val) => {
+  cucumberArgs.push(param, val);
+  return cucumberArgs;
+};
 program
   .command('run-cucumber [<DIR>|<FILE[:LINE]>...]')
   .description('Executes cucumber tests')
-  .option('-n, --name', 'To specify a scenario by its name matching a regular expression', gatherCucumberArgs('--name'))
-  .option('-r, --require <FILE|DIR>', 'To require support files before executing the features', gatherCucumberArgs('--require'))
-  .option('-f, --format <TYPE[:PATH]>', 'To specify the format of the output', gatherCucumberArgs('--format'))
-  .option('-fo, --format-options <JSON>', 'To pass in format options', gatherCucumberArgs('--format-options'))
-  .option('-p, --profile <NAME>', 'To set the profile', gatherCucumberArgs('--profile'))
-  .option('-t, --tag <EXPRESSION>', 'To run specific features or scenarios', gatherCucumberArgs('--tag'))
-  .option('-c, --compiler <file_extension>:<module_name>', 'To transpile Step definitions and support files written in other languages to JS', gatherCucumberArgs('--compiler'))
-  .option('-w, --world-parameters <JSON>', 'To pass in parameters to pass to the world constructor', gatherCucumberArgs('--world-parameters'))
+  .option('-n, --name', 'To specify a scenario by its name matching a regular expression', gatherCucumberArgs('--name'), cucumberArgs)
+  .option('-r, --require <FILE|DIR>', 'To require support files before executing the features', gatherCucumberArgs('--require'), cucumberArgs)
+  .option('-f, --format <TYPE[:PATH]>', 'To specify the format of the output', gatherCucumberArgs('--format'), cucumberArgs)
+  .option('-fo, --format-options <JSON>', 'To pass in format options', gatherCucumberArgs('--format-options'), cucumberArgs)
+  .option('-p, --profile <NAME>', 'To set the profile', gatherCucumberArgs('--profile'), cucumberArgs)
+  .option('-t, --tags <EXPRESSION>', 'To run specific features or scenarios', gatherCucumberArgs('--tags'), cucumberArgs)
+  .option('-c, --compiler <file_extension>:<module_name>', 'To transpile Step definitions and support files written in other languages to JS', gatherCucumberArgs('--compiler'), cucumberArgs)
+  .option('-w, --world-parameters <JSON>', 'To pass in parameters to pass to the world constructor', gatherCucumberArgs('--world-parameters'), cucumberArgs)
   .action(args => cli.runCucumber(cucumberArgs.concat(args))
     .catch((ex) => {
       console.log(ex);

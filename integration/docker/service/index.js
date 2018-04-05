@@ -9,6 +9,7 @@ const router = Router({
 });
 
 const port = process.env.SVC_PORT || '8080';
+const svcTimeout = process.env.DOCKER_SVC_TIMEOUT || '300000'; // 5 mins
 
 function runCommand(prog, args, options = {}) {
   const cmd = spawn(prog, args, options);
@@ -40,4 +41,6 @@ app
   .use(router.routes())
   .use(router.allowedMethods());
 
-app.listen(parseInt(port, 10));
+app
+  .listen(parseInt(port, 10))
+  .setTimeout(parseInt(svcTimeout, 10));
