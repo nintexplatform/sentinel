@@ -23,13 +23,10 @@ module.exports = function () {
   this.Given(/^I have copied the paths from the docker image$/, { timeout: env.longTimeout }, async function (table) {
     const paths = table.hashes();
     await Promise.all(paths.map((p) => {
-      let { dockerImage, dockerTag } = p;
+      let { dockerImage } = p;
+      const { dockerTag } = p;
       if (dockerTag) {
-        const [, envVar] = dockerTag.match(/^\[(.+)\]$/);
-        if (envVar) {
-          dockerTag = process.env[envVar];
-        }
-        dockerImage += `:${dockerTag}`;
+        dockerImage += `:${env.envsubst(dockerTag)}`;
       }
       if (p.type === 'file') {
         return this.docker.cmd('run', '--rm', '-v', '$(pwd):/wd', dockerImage, 'cp', p.fromPath, `/wd/${p.toPath}`)

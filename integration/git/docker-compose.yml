@@ -1,0 +1,12 @@
+version: "2"
+services:
+  git:
+    build:
+      context: ##THIS_DIR##/service/.
+      dockerfile: Dockerfile
+    env_file: ##WORKING_DIR##/config.env
+    volumes:
+      - ##WORKING_DIR##:##WORKING_DIR##
+    working_dir: ##WORKING_DIR##
+    ports:
+     - 8080
