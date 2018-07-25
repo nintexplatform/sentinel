@@ -30,10 +30,10 @@ function groupVulnerabilityLines(lines) {
 }
 
 function parseGroupOfLines(group) {
-  const typeReg = /(\w+) severity vulnerability found on (.+)$/;
-  const descReg = /desc: (.+)$/;
-  const infoReg = /info: (.+)$/;
-  const fromReg = /from: (.+)$/;
+  const typeReg = /(\w+) severity vulnerability found (?:on|in) (.+)$/;
+  const descReg = /(?:desc|Description): (.+)$/;
+  const infoReg = /(?:info|Info): (.+)$/;
+  const fromReg = /(?:from|From): (.+)$/;
   return group.reduce((result, line) => {
     /* eslint-disable no-param-reassign */
     let matches = typeReg.exec(line);
