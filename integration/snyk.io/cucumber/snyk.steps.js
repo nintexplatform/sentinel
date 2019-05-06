@@ -19,8 +19,11 @@ module.exports = function () {
 
   this.Then(/^there should not be any vulnerable paths found$/, async function () {
     if (this.snykOutput) {
-      assert(this.snykOutput.every(v =>
-        v.severity && v.severity.toLowerCase() !== env.snykFailureLevel.toLowerCase()), 'Vulnerability detected');
+      assert(!this.snykOutput
+        .filter(result => result.severity)
+        .map(result => result.severity.toLowerCase())
+        .some(severity => env.snykFailureLevels.includes(severity))
+      , 'Vulnerability detected');
     }
   });
 
