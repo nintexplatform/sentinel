@@ -1,6 +1,6 @@
 {
   "name": "sentinel-ast",
-  "version": "1.4.6",
+  "version": "1.4.7",
   "description": "Sentinel automated security testing framework",
   "main": "index.js",
   "repository": "https://github.com/nintexplatform/sentinel",
