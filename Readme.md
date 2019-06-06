@@ -146,6 +146,32 @@ A service which can be used for running a SSLyze scan against a host.
 A service which hosts OWASP ZAP.  
 [GitHub](https://github.com/zaproxy/zaproxy/)
 
+### Snyk
+A service which can be used for packages and dependency scanning projects.
+[snyk.io](https://snyk.io)
+
+## Enabling integrations
+Enabling integrations and loading up additional **services** is managed via a config file. It needs to be created in the root folder of the project that references Sentinel, as `.sentinel.json`
+
+Sample `.sentinel.json` :
+```
+{
+  "integrations": {
+    "whitelist": [
+      "node",
+      "docker",
+      "cucumber-report",
+      "selenium",
+      "sslyze",
+      "zap"
+    ],
+    "customServices": [
+        "./nodegoat-app/docker-compose.yml"
+    ]
+  }
+}
+```
+
 ## Extensibility
 Extending the framework starts with packaging your new **component** as a sub-directory within the `/integration` directory. These components can hook into the Sentinel runtime in a number of ways.
 
