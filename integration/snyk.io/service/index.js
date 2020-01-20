@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable import/no-unresolved */
 const { spawn } = require('child_process');
 const path = require('path');
@@ -11,57 +12,6 @@ const router = require('koa-router')({
 
 const port = process.env.SVC_PORT || '8086';
 const svcTimeout = process.env.SNYK_SVC_TIMEOUT || '300000'; // 5 mins
-
-function groupVulnerabilityLines(lines) {
-  let groupOfLines = [];
-  const hasLines = () => groupOfLines.length > 0;
-  const isNewGroup = line => line && line.includes('severity vulnerability found');
-  const hasFinished = line => line && line.includes('dependencies for known vulnerabilities');
-  return lines.reduce((agg, line) => {
-    if (hasLines() && (isNewGroup(line) || hasFinished(line))) {
-      agg.push(groupOfLines);
-      groupOfLines = [];
-    }
-    if (isNewGroup(line) || hasLines()) {
-      groupOfLines.push(line);
-    }
-    return agg;
-  }, []);
-}
-
-function parseGroupOfLines(group) {
-  const typeReg = /(\w+) severity vulnerability found (?:on|in) (.+)$/;
-  const descReg = /(?:desc|Description): (.+)$/;
-  const infoReg = /(?:info|Info): (.+)$/;
-  const fromReg = /(?:from|From): (.+)$/;
-  return group.reduce((result, line) => {
-    /* eslint-disable no-param-reassign */
-    let matches = typeReg.exec(line);
-    if (matches) {
-      [, result.severity, result.package] = matches;
-    }
-    matches = descReg.exec(line);
-    if (matches) {
-      [, result.desc] = matches;
-    }
-    matches = infoReg.exec(line);
-    if (matches) {
-      [, result.info] = matches;
-    }
-    matches = fromReg.exec(line);
-    if (matches) {
-      [, result.from] = matches;
-    }
-    /* eslint-enable no-param-reassign */
-    return result;
-  }, {});
-}
-
-function parseResult(result) {
-  const lines = result.split('\n');
-  const vulnerabilities = groupVulnerabilityLines(lines);
-  return vulnerabilities.map(parseGroupOfLines);
-}
 
 function runCommand(prog, args, options = {}) {
   const cmd = spawn(prog, args, options);
@@ -83,16 +33,38 @@ function runCommand(prog, args, options = {}) {
 }
 
 router.get('/snyk/run', async (ctx) => {
-  await runCommand('snyk', ['auth', '$SNYK_TOKEN'], { shell: true });
-  const { result } = await runCommand('snyk', ['test']);
-  ctx.body = parseResult(result);
+  const authResult = await runCommand('snyk', ['auth', '$SNYK_TOKEN'], { shell: true });
+  if (authResult.code !== 0) {
+    ctx.body = authResult;
+    ctx.status = 500;
+    return;
+  }
+  const testResult = await runCommand('snyk', ['test', '--json']);
+  try {
+    ctx.body = JSON.parse(testResult.result);
+    return;
+  } catch (parseError) {
+    ctx.body = testResult;
+    ctx.status = 500;
+  }
 });
 
 router.post('/snyk/run', async (ctx) => {
   const cwd = path.join(process.cwd(), ctx.request.body.working_directory || '.');
-  await runCommand('snyk', ['auth', '$SNYK_TOKEN'], { cwd, shell: true });
-  const { result } = await runCommand('snyk', ['test'], { cwd });
-  ctx.body = parseResult(result);
+  const authResult = await runCommand('snyk', ['auth', '$SNYK_TOKEN'], { cwd, shell: true });
+  if (authResult.code !== 0) {
+    ctx.body = authResult;
+    ctx.status = 500;
+    return;
+  }
+  const testResult = await runCommand('snyk', ['test', '--json'], { cwd });
+  try {
+    ctx.body = JSON.parse(testResult.result);
+    return;
+  } catch (parseError) {
+    ctx.body = testResult;
+    ctx.status = 500;
+  }
 });
 
 app
