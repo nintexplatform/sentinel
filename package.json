@@ -1,6 +1,6 @@
 {
   "name": "sentinel-ast",
-  "version": "1.4.9",
+  "version": "1.4.10",
   "description": "Sentinel automated security testing framework",
   "main": "index.js",
   "repository": "https://github.com/nintexplatform/sentinel",
@@ -41,7 +41,7 @@
     "dotenv": "^2.0.0",
     "figlet": "^1.2.0",
     "js-yaml": "^3.9.1",
-    "lodash.merge": "^4.6.0"
+    "lodash.merge": "^4.6.2"
   },
   "devDependencies": {
     "eslint": "^4.6.1",

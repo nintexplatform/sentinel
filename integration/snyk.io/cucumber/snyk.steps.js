@@ -20,11 +20,9 @@ module.exports = function () {
   this.Then(/^there should not be any vulnerable paths found$/, async function () {
     if (this.snykOutput) {
       assert(
-        !this.snykOutput
-          .filter(result => result.severity)
-          .map(result => result.severity.toLowerCase())
+        !this.snykOutput.vulnerabilities
           .some(severity => env.snykFailureLevels.includes(severity))
-        , 'Vulnerability detected',
+        , 'Vulnerability detected.',
       );
     }
   });
