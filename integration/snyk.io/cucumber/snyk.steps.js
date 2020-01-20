@@ -21,7 +21,7 @@ module.exports = function () {
     if (this.snykOutput) {
       assert(
         !this.snykOutput.vulnerabilities
-          .some(severity => env.snykFailureLevels.includes(severity))
+          .some(vuln => env.snykFailureLevels.includes(vuln.severity))
         , 'Vulnerability detected.',
       );
     }
