@@ -6,7 +6,7 @@ script:
 deploy:
   provider: npm
   email: perry.loh@nintex.com
-  edge:true
+  edge: true
   api_key:
     secure: NgvJsumMq+zsgfvqGfhywfkm0NjVkAUIb9FWOKpTh9BA9cxTs8wwb74Y2FGRavt6ijhpG+fFxDqghU1xVCtUdU5PdJj181jHJT3J0LPFmSat2c71MmUN99KJe/vd+Vy7WPZL4JAEuYw+g8Gg/+cBCmwwEDSvJ2iyXKA4MR620FwjdLCxBdwxhTRFYLyDH+ahRjhiVQrE7RuXupbErrx7qzeOcvE0klAk4NuOBEjNNR80ghh3X/u7KeDyimxGD5znKKTXALHWxnouHFi8Z9iRLWBhR1DOmZRwyC93WiSTlH2uQqT1FZSkqeUhyoyWdddxSHH4xiE78YF5W+sDFsSZ1eGiTg0UEml3+uKERgFl73nccC4WhdFpqWfKw2rbifB+9h3XszbfH85VNs1L//Dw/S/rSpwKKY9lFmgy/olnfhk2waXsiBKJ9MBPXkxGgUgO5F9NPIPAmGW4jOTi5G3Bt45EY0eWianLpLls3lREDCPRj/6VHbi2tdj1aj5apZU7dEzeU6f4dii/fYrwwE9rSGPKHhZj/Vuxr0onNTIQwpQemC1yfoKdvqbcQutE+RPbktYzdY4RSSMRl1K/XgeVR3iAnMkHXr8QYI92nmv3tVHdrZnXXzJ6+JVYlzLNeuOcOLWvK4Zxgu4LM1iFb7t2u9Iw78XPdqeSpDJN3uOtn8g=
   on:
