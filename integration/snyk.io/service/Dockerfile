@@ -1,4 +1,4 @@
-FROM node:8.9.3-slim
+FROM node:12
 
 RUN useradd -m snyk
 RUN npm install -g snyk
