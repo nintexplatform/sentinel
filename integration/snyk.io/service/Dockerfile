@@ -2,6 +2,7 @@ FROM node:12
 
 RUN useradd -m snyk
 RUN npm install -g snyk
+RUN npm install -g snyk-to-html
 
 COPY index.js /index.js
 COPY package.json /package.json
