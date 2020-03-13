@@ -14,6 +14,7 @@ class Snyk {
       uri: `${env.snykUrl}snyk/run`,
       method: 'POST',
       json: true,
+      resolveWithFullResponse: true,
       body: {
         working_directory: dir,
       },
