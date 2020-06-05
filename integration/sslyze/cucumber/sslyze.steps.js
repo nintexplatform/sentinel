@@ -37,14 +37,14 @@ module.exports = function () {
   });
 
   this.Then(/^the SSLyze output must contain a line that matches (.*)$/, async function (regex) {
-    assert.equal((this.sslyzeOutput.search(regex) !== -1), `${errorMessage}: SSLyze scan didnot contain any line matching - '${regex}'`);
+    assert(this.sslyzeOutput.search(regex) !== -1, `${errorMessage}: SSLyze scan didnot contain any line matching - '${regex}'`);
   });
 
   this.Then(/^the minimum key size must be (.*) bits$/, function (arg1) {
     assert(this.ciphersSupported.length > 0, `${errorMessage}: The host does not support any valid ciphers`);
 
     this.ciphersSupported.forEach((ciphers) => {
-      assert(ciphers.size >= arg1, `${errorMessage}: ${ciphers.name} has key size less than 128 bits`);
+      assert(ciphers.size >= arg1, `${errorMessage}: ${ciphers.name} has key size less than ${arg1} bits`);
     });
   });
 
@@ -93,7 +93,7 @@ module.exports = function () {
   });
 
   this.Then(/^the certificate has a matching host name$/, function () {
-    assert(this.sslyzeOutput.indexOf(`${env.serverHostName}`) !== -1, `${errorMessage}: None of Certificate has matching hostname - ${env.serverHostName}`);
+    assert(this.sslyzeOutput.indexOf(`${env.serverHostName.replace(/^https?:\/\//,'')}`) !== -1, `${errorMessage}: None of Certificate has matching hostname - ${env.serverHostName.replace(/^https?:\/\//,'')}`);
   });
 
   this.Then(/^the certificate is in major root CA trust stores$/, function () {
