@@ -3,66 +3,35 @@ const env = require('./../cucumber/environment');
 
 class Sslyze {
   async startTheProcess(host) {
-    this.output = await rp(`${env.sslyzeServerUrl}sslyze/run/${host}`);
+    this.output = await rp({
+      uri: `${env.sslyzeServerUrl}sslyze/run/${host}`,
+      json: true,
+      simple: true,
+      resolveWithFullResponse: false,
+    });
     return this.output;
   }
 
   listAcceptedCipherSuites() {
-    let readFlag = false;
-    const ciphers = [];
-    this.output.toString()
-      .split('\n')
-      .forEach((line, index, arr) => {
-        if (index === arr.length - 1 && line === '') {
-          return;
+    const results = this.output.json.server_scan_results[0].scan_commands_results;
+    return Object.keys(results)
+      .filter(k => k.endsWith('_cipher_suites'))
+      .reduce((acceptedCiphers, suiteKey) => {
+        const cipherType = suiteKey.replace('_cipher_suites', '');
+        if (results[suiteKey].accepted_cipher_suites &&
+          results[suiteKey].accepted_cipher_suites.length > 0) {
+          return acceptedCiphers.concat(results[suiteKey].accepted_cipher_suites.map(suite => ({
+            type: cipherType,
+            name: suite.cipher_suite.name,
+            size: suite.cipher_suite.key_size,
+          })));
         }
-
-        // Look for the Accepted Cipher Suites - TurnON flag accordingly
-        if (line.search('The server accepted the following.*cipher suites:') !== -1) {
-          readFlag = true;
-        }
-
-        if (line === '') {
-          readFlag = false;
-        }
-
-        if (readFlag && (line.indexOf('TLS_') !== -1)) {
-          const [, name, , size] = line.replace('bits', '').split(/\s+/);
-          ciphers.push({ name, size });
-        }
-      });
-    return ciphers;
+        return acceptedCiphers;
+      }, []);
   }
 
-  listsupportedprotocols() {
-    const protocol = [];
-    let temp = '';
-    this.output.toString()
-      .split('\n')
-      .forEach((line, index, arr) => {
-        if (index === arr.length - 1 && line === '') {
-          return;
-        }
-
-        // Identify the Protocols
-        if (line.indexOf('Cipher suites:') !== -1) {
-          temp = line.match(/(SSL|TLS) \d+\.\d+/g)         
-          return;
-        }
-
-        // Push the Protocols which are Rejected
-        if ((line.indexOf('rejected') !== -1) && (temp !== '')) {
-          protocol.push({ name: temp[0], type: 'Rejected' });
-          temp = '';
-        }
-
-        // Push the Protocols which are Supported
-        if ((line.indexOf('Preferred') !== -1) && (temp !== '')) {
-          protocol.push({ name: temp[0], type: 'Supported' });
-          temp = '';
-        }
-      });
-    return protocol;
+  static formatProtocol(p) {
+    return p.toLowerCase().replace(/[ .]/g, '_');
   }
 }
 
