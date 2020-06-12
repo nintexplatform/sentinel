@@ -18,7 +18,7 @@ class Sslyze {
         }
 
         // Look for the Accepted Cipher Suites - TurnON flag accordingly
-        if (line.indexOf('Accepted:') !== -1) {
+        if (line.search('The server accepted the following.*cipher suites:') !== -1) {
           readFlag = true;
         }
 
@@ -45,20 +45,20 @@ class Sslyze {
         }
 
         // Identify the Protocols
-        if (line.indexOf('Cipher Suites:') !== -1) {
-          temp = line.split(/\s+/);
+        if (line.indexOf('Cipher suites:') !== -1) {
+          temp = line.match(/(SSL|TLS) \d+\.\d+/g)         
           return;
         }
 
         // Push the Protocols which are Rejected
         if ((line.indexOf('rejected') !== -1) && (temp !== '')) {
-          protocol.push({ name: temp[2], type: 'Rejected' });
+          protocol.push({ name: temp[0], type: 'Rejected' });
           temp = '';
         }
 
         // Push the Protocols which are Supported
         if ((line.indexOf('Preferred') !== -1) && (temp !== '')) {
-          protocol.push({ name: temp[2], type: 'Supported' });
+          protocol.push({ name: temp[0], type: 'Supported' });
           temp = '';
         }
       });
