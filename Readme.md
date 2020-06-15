@@ -193,6 +193,8 @@ Extending the framework starts with packaging your new **component** as a sub-di
 |---------------------|-----------------------------|--------------------------------|----------|-------------|
 | sslyze              | SSLYZE_SERVER_URL           | Url to sslyze api server       | false    | http://sslyze:8081/ |
 | zap                 | ZAP_SERVER_URL              | Url to zap api server          | false    | http://zap:8080/    |
+| zap                 | ZAP_MAX_DEPTH               | zap crawling max depth         | false    | 5           |
+| zap                 | ZAP_THREAD_DEPTH            | zap thread number              | false    | 5           | 
 | snyk                | SNYK_TOKEN                  | [Auth token](https://snyk.io/docs/using-snyk#authentication) for snyk| false    |                     |
 | snyk                | SNYK_URL                    | Url to snyk api server         | false    | http://snyk:8086/   |
 | application         | AUT_SERVER_URL              | Url to application under test  | true     | https://nodegoat:4000 |
@@ -203,6 +205,7 @@ Extending the framework starts with packaging your new **component** as a sub-di
 | selenium            | WEBDRIVER_LONG_TIMEOUT      | Timeout for long running step  | false    |  30000      |
 | selenium            | EXECUTION_ENVIRONMENT       | For zap proxy                  | false    |  local (default) / proxy / remote |
 | cucumber            | FEATURE_DIR                 | Feature file location          | false    | ./features/  |
+| cucumber            | CUCUMBER_LONG_TIMEOUT       | timeout for cucumber steps     | false    | 30000        |
 | cucumber-report     | CUCUMBER_REPORT_DIR         | path to store reports          | false    | ./report/    |
 | slack               | SLACK_FEATURE               | *ON* or *OFF* the process      | false    | 'ON' / 'OFF' (default) |    
 | slack               | SLACK_WEBHOOK_URI           | Specify the Incoming webhooks url - [Reference](https://api.slack.com/incoming-webhooks)   |   false |  - |       
