@@ -23,15 +23,15 @@ async function waitForResult(result, timeout, action) {
     if (timeout > 0 && Date.now() > (now + timeout)) {
       throw new Error('Timeout waiting for zap scan to complete');
     }
-    await sleep(500); // eslint-disable-line no-await-in-loop
+    await sleep(1000); // eslint-disable-line no-await-in-loop
     done = await action(); // eslint-disable-line no-await-in-loop
   }
 }
 
 module.exports = function () {
   this.Then(/^the application is spidered/, { timeout: env.longTimeout }, async function () {
-    zap.setsetOptionMaxDepth(5);
-    zap.setOptionThreadCount(5);
+    zap.setsetOptionMaxDepth(env.maxDepth);
+    zap.setOptionThreadCount(env.threadCount);
 
     url = await this.driver.getCurrentUrl();
 
@@ -44,7 +44,7 @@ module.exports = function () {
     await zap.startPassiveScan();
   });
 
-  this.Then(/^the active scanner is run/, async function () {
+  this.Then(/^the active scanner is run/, { timeout: env.longTimeout }, async function () {
     const resp = await zap.startActiveScan(url);
     const scanID = resp.scan;
     await waitForResult(true, env.scanTimeout, () => zap.checkActiveScanStatus(scanID));
