@@ -40,9 +40,9 @@ async function snykTestToHtml(workingDir) {
     
     var snyk;
     if (workingDir == undefined)
-      snyk = spawn('snyk', ['test','--json']);
+      snyk = spawn('snyk', ['test','--all-projects','--json']);
     else
-      snyk = spawn('snyk', ['test','--json'], workingDir);
+      snyk = spawn('snyk', ['test','--all-projects','--json'], workingDir);
     
     var snykToHtml = spawn('snyk-to-html', ['-s']);
     let snykHtmlresult = '';
@@ -79,6 +79,7 @@ async function snykTestToHtml(workingDir) {
           const id = vuln.id;
           const title = vuln.title;
           const severity = vuln.severity;
+          const from = vuln.from.join(',');
           const url = 'https://snyk.io/vuln/' + vuln.id;
         
           return {id, title, severity, url };
