@@ -82,7 +82,7 @@ async function snykTestToHtml(workingDir) {
           const from = vuln.from.join(',');
           const url = 'https://snyk.io/vuln/' + vuln.id;
         
-          return {id, title, severity, url };
+          return {id, title, severity, from, url };
         });  
     }
 
