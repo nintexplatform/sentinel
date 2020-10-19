@@ -6,7 +6,12 @@ class Snyk {
     this.output = await rp({
       uri: `${env.snykUrl}snyk/run`,
       json: true,
+      resolveWithFullResponse: true,
+      simple: false,
     });
+    if (this.output.statusCode !== 200) {
+      throw new Error(`Snyk error: ${JSON.stringify(this.output.body)}`);
+    }
     return this.output;
   }
   async runScanInDirectory(dir) {
@@ -15,10 +20,14 @@ class Snyk {
       method: 'POST',
       json: true,
       resolveWithFullResponse: true,
+      simple: false,
       body: {
         working_directory: dir,
       },
     });
+    if (this.output.statusCode !== 200) {
+      throw new Error(`Snyk error: ${JSON.stringify(this.output.body)}`);
+    }
     return this.output;
   }
 }

@@ -1,17 +1,9 @@
-FROM node:12
-
-RUN useradd -m snyk
-RUN npm install -g snyk
-RUN npm install -g snyk-to-html
-
-COPY index.js /index.js
-COPY package.json /package.json
-
-RUN npm install
-
-USER snyk
-
-ENV SNYK_TOKEN ""
-ENV APP_DIR ""
-
-CMD ["node", "/index.js"]
+FROM snyk/snyk-cli:npm
+WORKDIR /snykApi
+ENV SERVICE_DIR "/snykApi"
+COPY index.js index.js
+COPY package.json package.json
+COPY package-lock.json /package-lock.json
+RUN npm ci
+ENTRYPOINT []
+CMD ["node", "/snykApi/index.js"]
