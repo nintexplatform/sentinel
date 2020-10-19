@@ -20,25 +20,25 @@ module.exports = function () {
 
   this.Then(/^there should not be any vulnerable paths found$/, async function () {
     if (this.snykOutput) {
-      this.snykOutput.body.detected = this.snykOutput.body.vulnerabilities.filter(vuln => env.snykFailureLevels.includes(vuln.severity)).length;
-      
-      assert(!this.snykOutput.body.vulnerabilities.some(vuln => env.snykFailureLevels.includes(vuln.severity)),'Vulnerability detected.');
+      this.snykOutput.body.detected = this.snykOutput.body.vulnerabilities
+        .filter(vuln => env.snykFailureLevels.includes(vuln.severity)).length;
+      assert(!this.snykOutput.body.vulnerabilities.some(vuln => env.snykFailureLevels.includes(vuln.severity)), 'Vulnerability detected.');
     }
   });
 
   this.After(async function (scenario) {
     if (this.snykOutput) {
       // Generate snyk html reports
+      const reportDir = process.env.CUCUMBER_REPORT_DIR || './report/';
+      const reportName = tags => `${reportDir}snyk-report-${tags}.html`;
       try {
-        var tags = scenario.getTags().map(e => e.getName()).join('-');
-        const reportDir = process.env.CUCUMBER_REPORT_DIR || './report/';
-        var reportName = `${reportDir}snyk-report-${tags}.html`;
-        fs.writeFileSync(reportName, this.snykOutput.body.report);
+        const tags = scenario.getTags().map(e => e.getName()).join('-');
+        fs.writeFileSync(reportName(tags), this.snykOutput.body.report);
       } catch (err) {
-        console.log (`Error generating Snyk HTML report : ${reportName} (${err})`)
+        // eslint-disable-next-line no-console
+        console.log(`Error generating Snyk HTML report : ${reportName('')} (${err})`);
       }
-      
-      scenario.attach(JSON.stringify(this.snykOutput.body.vulnerabilities,null, '\t'));
+      scenario.attach(JSON.stringify(this.snykOutput.body.vulnerabilities, null, '\t'));
     }
   });
 };

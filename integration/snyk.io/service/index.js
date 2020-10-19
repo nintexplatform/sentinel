@@ -32,67 +32,86 @@ function runCommand(prog, args, options = {}) {
   });
 }
 
-function uniqueArray (arr) {
-  return [...new Set(arr.map(o => JSON.stringify(o)))].map(s => JSON.parse(s))
+function uniqueArray(arr) {
+  return [...new Set(arr.map(o => JSON.stringify(o)))].map(s => JSON.parse(s));
 }
 
 async function snykTestToHtml(workingDir) {
-    
-    var snyk;
-    if (workingDir == undefined)
-      snyk = spawn('snyk', ['test','--all-projects','--json']);
-    else
-      snyk = spawn('snyk', ['test','--all-projects','--json'], workingDir);
-    
-    var snykToHtml = spawn('snyk-to-html', ['-s']);
-    let snykHtmlresult = '';
-    let snykTestResult = '';
+  let snyk;
+  if (workingDir === undefined) {
+    snyk = spawn('snyk', ['test', '--all-projects', '--json']);
+  } else {
+    snyk = spawn('snyk', ['test', '--all-projects', '--json'], workingDir);
+  }
+  const snykToHtml = spawn('snyk-to-html', ['-s']);
+  let snykHtmlresult = '';
+  let snykTestResult = '';
 
-    snyk.stdout.on('data', (data) => {
-      snykTestResult += data.toString();
-      snykToHtml.stdin.write(data);
+  // Pipe snyk output into snykToHtml
+  snyk.stdout.on('data', (data) => {
+    snykTestResult += data.toString();
+    snykToHtml.stdin.write(data);
+  });
+  snykToHtml.stdout.on('data', (data) => {
+    snykHtmlresult += data.toString();
+  });
+
+  // Wait for the snyk process to finish
+  await new Promise((resolve, reject) => {
+    snyk.on('close', (code) => {
+      console.log('snyk test', code);
+      snykToHtml.stdin.end();
+      resolve();
     });
-
-    snykToHtml.stdout.on('data', (data) => {
-      snykHtmlresult += data.toString();
+    snyk.on('error', (err) => {
+      console.log('snyk test', err);
+      reject(err);
     });
+  });
 
-    await new Promise((resolve, reject) => {
-      snyk.on('close', (code) => {
-        snykToHtml.stdin.end();
-        resolve();
-      });
+  // Wait for the snyk-to-html process to finish
+  await new Promise((resolve, reject) => {
+    snykToHtml.on('close', (code) => {
+      console.log('snyk-to-html', code);
+      resolve();
     });
-    
-    await new Promise((resolve, reject) => {
-      snykToHtml.on('close', (code) => {
-        resolve();
-      });
+    snykToHtml.on('error', (err) => {
+      console.log('snyk-to-html', err);
+      reject(err);
     });
+  });
 
-    const snykTestJSON = JSON.parse(snykTestResult);
-    var vulns;
-    
-    if (snykTestJSON.vulnerabilities) {
-      vulns = snykTestJSON.vulnerabilities.map(vuln =>
-        {   
-          const id = vuln.id;
-          const title = vuln.title;
-          const severity = vuln.severity;
-          const from = vuln.from.join(',');
-          const url = 'https://snyk.io/vuln/' + vuln.id;
-        
-          return {id, title, severity, from, url };
-        });  
-    }
+  // Parse the snyk output as json
+  const snykTestJSON = JSON.parse(snykTestResult);
+  let vulns = [];
 
-    return {
-      vulnerabilities: uniqueArray(vulns),
-      report: snykHtmlresult,
-    };
+  if (snykTestJSON.ok !== undefined && !snykTestJSON.ok) {
+    throw new Error(snykTestJSON.error);
+  }
+
+  if (snykTestJSON.vulnerabilities) {
+    vulns = snykTestJSON.vulnerabilities.map((vuln) => {
+      const {
+        id, title, severity, from,
+      } = vuln;
+      return {
+        id,
+        title,
+        severity,
+        from: from.join(','),
+        url: `https://snyk.io/vuln/${id}`,
+      };
+    });
+  }
+
+  return {
+    vulnerabilities: uniqueArray(vulns),
+    report: snykHtmlresult,
+  };
 }
 
 router.get('/snyk/run', async (ctx) => {
+  ctx.set('Content-type', 'application/json');
   const authResult = await runCommand('snyk', ['auth', '$SNYK_TOKEN'], { shell: true });
   if (authResult.code !== 0) {
     ctx.body = authResult;
@@ -101,18 +120,17 @@ router.get('/snyk/run', async (ctx) => {
   }
 
   try {
-    ctx.set('Content-type','application/json');
-    var testResult = snykTestToHtml();
+    const testResult = snykTestToHtml();
     ctx.body = testResult;
-    
     return;
   } catch (parseError) {
-    ctx.body = testResult;
+    ctx.body = parseError.message;
     ctx.status = 500;
   }
 });
 
 router.post('/snyk/run', async (ctx) => {
+  ctx.set('Content-type', 'application/json');
   const cwd = path.join(process.cwd(), ctx.request.body.working_directory || '.');
   const authResult = await runCommand('snyk', ['auth', '$SNYK_TOKEN'], { cwd, shell: true });
   if (authResult.code !== 0) {
@@ -122,13 +140,11 @@ router.post('/snyk/run', async (ctx) => {
   }
 
   try {
-    ctx.set('Content-type','application/json');
-    var testResult = await snykTestToHtml({cwd});
+    const testResult = await snykTestToHtml({ cwd });
     ctx.body = testResult;
-    
     return;
   } catch (parseError) {
-    ctx.body = testResult;
+    ctx.body = parseError.message;
     ctx.status = 500;
   }
 });

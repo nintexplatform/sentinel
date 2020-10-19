@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     env_file: ##WORKING_DIR##/config.env
     volumes:
-      - ##WORKING_DIR##:/working_dir
-    working_dir: /working_dir
+      - ##WORKING_DIR##:/project
+    working_dir: /project
     ports:
      - 8086
