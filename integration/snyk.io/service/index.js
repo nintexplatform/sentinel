@@ -85,7 +85,7 @@ async function snykTestToHtml(workingDir) {
   const snykTestJSON = JSON.parse(snykTestResult);
   let vulns = [];
 
-  if (snykTestJSON.ok !== undefined && !snykTestJSON.ok) {
+  if (snykTestJSON.ok !== undefined && !snykTestJSON.ok && snykTestJSON.error !== undefined) {
     throw new Error(snykTestJSON.error);
   }
 
