@@ -10,6 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "cucumber-html-reporter": "^5.0.0",
-    "shelljs": "^0.7.8"
+    "shelljs": "^0.8.5"
   }
 }
