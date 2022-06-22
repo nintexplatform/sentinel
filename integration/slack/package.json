@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "jsdom": "^12.0.0",
+    "jsdom": "^16.5.0",
     "slackr": "^1.0.0"
   }
 }
