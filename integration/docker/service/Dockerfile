@@ -1,5 +1,5 @@
 FROM docker:stable
-FROM node:12
+FROM node:14
 COPY --from=0 /usr/local/bin/docker /usr/local/bin/docker
 
 COPY index.js /index.js
